@@ -17,15 +17,20 @@ add_library(lib${PROJECT_NAME}
                             src/randomengine.cpp                            
                             src/srandengine.cpp
                             src/gamemanager.cpp)   
-#target_include_directories(${PROJECT_NAME}) 
 target_link_libraries(lib${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME}
                                 src/main.cpp)
 target_link_libraries(${PROJECT_NAME} lib${PROJECT_NAME})
 
-#if(BUILD_TESTS)
-#  add_executable(${PROJECT_NAME}_mofset_tests                 
-#                                tests/mofset_ua_tests.cpp)   
-#  target_link_libraries(${PROJECT_NAME}_mofset_tests ${PROJECT_NAME})
-#endif(BUIDL_TESTS)
+if(BUILD_TESTS)
+  include_directories(googletest/googletest/include)
+  add_subdirectory(googletest)
+
+  add_executable(${PROJECT_NAME}_tests    
+                                tests/randomengine_tests.cpp    
+                                tests/srandengine_tests.cpp     
+                                tests/gamemanager_tests.cpp
+                                tests/main.cpp)   
+  target_link_libraries(${PROJECT_NAME}_tests lib${PROJECT_NAME} gtest)
+endif(BUIDL_TESTS)
